@@ -23,12 +23,6 @@ extern "C" {
 }
 #endif
 
-// This header can technically be included in C code as well, but there's not
-// much point in using it unless our program was compiled as C++.
-#ifdef __cplusplus
-# include <cxxabi.h>
-#endif
-
 // -----------------------------------------------------------------------------
 
 #define UNUSED(arg) ((void)arg)
@@ -65,10 +59,6 @@ static const char* s_get_func_offset(
 
 static const char* s_get_func_address(
     const char* backtrace_str
-) __attribute__((no_instrument_function));
-
-static const char* s_get_func_demangled_name(
-    const char* func_name
 ) __attribute__((no_instrument_function));
 
 // -----------------------------------------------------------------------------
@@ -172,7 +162,17 @@ static const char* s_get_func_address(
     return NULL;
 }
 
+// -----------------------------------------------------------------------------
+
 #ifdef __cplusplus
+// This header can technically be included in C code as well, but there's not
+// much point in using it unless our program is compiled as C++.
+# include <cxxabi.h>
+
+static const char* s_get_func_demangled_name(
+    const char* func_name
+) __attribute__((no_instrument_function));
+
 static const char* s_get_func_demangled_name(
     const char* func_name
 )
