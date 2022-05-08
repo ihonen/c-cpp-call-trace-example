@@ -219,9 +219,9 @@ void __cyg_profile_func_enter(
 
     // -----
 
-    const char* func_name           = s_get_func_name(current_func_str);
-    const char* func_offset         = s_get_func_offset(current_func_str);
-    const char* func_address        = s_get_func_address(current_func_str);
+    const char* func_name    = s_get_func_name(current_func_str);
+    const char* func_offset  = s_get_func_offset(current_func_str);
+    const char* func_address = s_get_func_address(current_func_str);
 
 #ifdef __cplusplus
     // If we were able to demangle the name, prefer the demangled name.
