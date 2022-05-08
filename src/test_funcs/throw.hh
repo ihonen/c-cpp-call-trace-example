@@ -2,4 +2,9 @@
 
 // -----------------------------------------------------------------------------
 
-void throwing_foo();
+namespace mynamespace
+{
+
+    void throwing_foo();
+
+}

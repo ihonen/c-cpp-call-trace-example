@@ -4,7 +4,7 @@
 
 // -----------------------------------------------------------------------------
 
-void throwing_foo()
+void mynamespace::throwing_foo()
 {
     throw std::exception();
 }

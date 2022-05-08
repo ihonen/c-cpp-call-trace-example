@@ -2,7 +2,12 @@
 
 // -----------------------------------------------------------------------------
 
-template<typename T>
-void template_foo()
+namespace mynamespace
 {
+
+    template<typename T>
+    void template_foo()
+    {
+    }
+
 }

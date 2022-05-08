@@ -2,24 +2,29 @@
 
 // -----------------------------------------------------------------------------
 
-class Base
+namespace mynamespace
 {
-public:
 
-    ~Base();
+    class Base
+    {
+    public:
 
-    virtual void virtual_foo();
-};
+        ~Base();
 
-class Derived : public Base
-{
-public:
+        virtual void virtual_foo();
+    };
 
-    ~Derived();
+    class Derived : public Base
+    {
+    public:
 
-    static void static_foo();
+        ~Derived();
 
-    void nonvirtual_foo();
+        static void static_foo();
 
-    void virtual_foo() override;
-};
+        void nonvirtual_foo();
+
+        void virtual_foo() override;
+    };
+
+}

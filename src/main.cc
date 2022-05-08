@@ -57,7 +57,7 @@ int main()
     printf("\n");
     try
     {
-        throwing_foo();
+        mynamespace::throwing_foo();
     }
     catch (...)
     {
@@ -68,21 +68,21 @@ int main()
     printf("\n");
     printf("*** Template functions ***\n");
     printf("\n");
-    template_foo<int>();
+    mynamespace::template_foo<int>();
 
     // -----
 
     printf("\n");
     printf("*** Constructors ***\n");
     printf("\n");
-    Derived* derived = new Derived();
+    auto* derived = new mynamespace::Derived();
 
     // -----
 
     printf("\n");
     printf("*** Static member functions ***\n");
     printf("\n");
-    Derived::static_foo();
+    mynamespace::Derived::static_foo();
 
     // -----
 

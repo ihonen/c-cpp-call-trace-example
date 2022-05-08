@@ -2,28 +2,28 @@
 
 // -----------------------------------------------------------------------------
 
-Base::~Base()
+mynamespace::Base::~Base()
 {
 }
 
-void Base::virtual_foo()
+void mynamespace::Base::virtual_foo()
 {
 }
 
 // -----------------------------------------------------------------------------
 
-Derived::~Derived()
+mynamespace::Derived::~Derived()
 {
 }
 
-void Derived::static_foo()
+void mynamespace::Derived::static_foo()
 {
 }
 
-void Derived::nonvirtual_foo()
+void mynamespace::Derived::nonvirtual_foo()
 {
 }
 
-void Derived::virtual_foo()
+void mynamespace::Derived::virtual_foo()
 {
 }
