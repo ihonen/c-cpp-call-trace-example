@@ -1,3 +1,6 @@
+// This file can be compiled as both C and C++.
+// If compiled as C++, symbol names are demangled.
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,13 +23,20 @@ extern "C" {
 }
 #endif
 
+// This header can technically be included in C code as well, but there's not
+// much point in using it unless our program was compiled as C++.
+#ifdef __cplusplus
+# include <cxxabi.h>
+#endif
+
 // -----------------------------------------------------------------------------
 
 #define UNUSED(arg) ((void)arg)
 
-#define FUNC_NAME_MAX_LEN   ((size_t)64)
-#define FUNC_OFFSET_MAX_LEN ((size_t)64)
-#define FUNC_ADDR_MAX_LEN   ((size_t)64)
+// Naively assume that the strings won't be longer than this.
+#define FUNC_NAME_MAX_LEN   ((size_t)256)
+#define FUNC_OFFSET_MAX_LEN ((size_t)256)
+#define FUNC_ADDR_MAX_LEN   ((size_t)256)
 
 // -----------------------------------------------------------------------------
 
@@ -55,6 +65,10 @@ static const char* s_get_func_offset(
 
 static const char* s_get_func_address(
     const char* backtrace_str
+) __attribute__((no_instrument_function));
+
+static const char* s_get_func_demangled_name(
+    const char* func_name
 ) __attribute__((no_instrument_function));
 
 // -----------------------------------------------------------------------------
@@ -158,6 +172,31 @@ static const char* s_get_func_address(
     return NULL;
 }
 
+#ifdef __cplusplus
+static const char* s_get_func_demangled_name(
+    const char* func_name
+)
+{
+    static char demangled_name[64];
+
+    int status   = 0;
+    char* buffer = NULL;
+
+    buffer = abi::__cxa_demangle(func_name, 0, 0, &status);
+    if (status == 0)
+    {
+        strncpy(demangled_name, buffer, 64);
+        free(buffer);
+        return demangled_name;
+    }
+    else
+    {
+        free(buffer);
+    }
+    return NULL;
+}
+#endif
+
 // -----------------------------------------------------------------------------
 
 void __cyg_profile_func_enter(
@@ -180,9 +219,17 @@ void __cyg_profile_func_enter(
 
     // -----
 
-    const char* func_name    = s_get_func_name(current_func_str);
-    const char* func_offset  = s_get_func_offset(current_func_str);
-    const char* func_address = s_get_func_address(current_func_str);
+    const char* func_name           = s_get_func_name(current_func_str);
+    const char* func_offset         = s_get_func_offset(current_func_str);
+    const char* func_address        = s_get_func_address(current_func_str);
+
+#ifdef __cplusplus
+    // If we were able to demangle the name, prefer the demangled name.
+    if (const char* func_demangled_name = s_get_func_demangled_name(func_name))
+    {
+        func_name = func_demangled_name;
+    }
+#endif
 
     printf(
         "<TRACE>%*c---> %s%s [%s] %i\n",
@@ -216,6 +263,14 @@ void __cyg_profile_func_exit(
     const char* func_name    = s_get_func_name(current_func_str);
     const char* func_offset  = s_get_func_offset(current_func_str);
     const char* func_address = s_get_func_address(current_func_str);
+
+#ifdef __cplusplus
+    // If we were able to demangle the name, prefer the demangled name.
+    if (const char* func_demangled_name = s_get_func_demangled_name(func_name))
+    {
+        func_name = func_demangled_name;
+    }
+#endif
 
     printf(
         "<TRACE>%*c<--- %s%s [%s] %i\n",
