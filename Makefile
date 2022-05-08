@@ -11,11 +11,11 @@ CXXFLAGS := -std=c++11 -O2 -g -Wl,--export-dynamic -finstrument-functions
 LDFLAGS  :=
 
 SOURCES := \
-	src/extern.c \
 	src/main.cc \
-	src/member.cc \
-	src/throw.cc \
-	src/trace.c
+	src/trace.c \
+	src/test_funcs/extern.c \
+	src/test_funcs/member.cc \
+	src/test_funcs/throw.cc
 
 # ------------------------------------------------------------------------------
 

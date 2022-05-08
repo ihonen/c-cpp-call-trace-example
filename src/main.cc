@@ -1,12 +1,12 @@
 extern "C" {
-#include "extern.h"
-#include "inline.h"
-#include "static.h"
+#include "test_funcs/extern.h"
+#include "test_funcs/inline.h"
+#include "test_funcs/static.h"
 }
 
-#include "member.hh"
-#include "template.hh"
-#include "throw.hh"
+#include "test_funcs/member.hh"
+#include "test_funcs/template.hh"
+#include "test_funcs/throw.hh"
 
 #include <cstdio>
 
