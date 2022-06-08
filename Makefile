@@ -12,7 +12,7 @@ LDFLAGS  :=
 
 SOURCES := \
 	src/main.cc \
-	src/trace.c \
+	src/trace.cc \
 	src/test_funcs/extern.c \
 	src/test_funcs/member.cc \
 	src/test_funcs/throw.cc
